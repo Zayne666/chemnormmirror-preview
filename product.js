@@ -3,3 +3,4 @@ async function init(){const data=await(await fetch('data/chemnorm/products.json'
 document.addEventListener('click',e=>{const b=e.target.closest('[data-inquiry]');if(b){const items=JSON.parse(localStorage.getItem('chemnorm-inquiry')||'[]');const id=+b.dataset.inquiry;if(!items.includes(id))items.push(id);localStorage.setItem('chemnorm-inquiry',JSON.stringify(items));b.textContent='Added to inquiry list';b.disabled=true;}});init().catch(()=>{$('#productMain').innerHTML='<div class="empty">This compound record could not be loaded.</div>'});
 
 
+
