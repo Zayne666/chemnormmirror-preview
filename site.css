@@ -9,4 +9,3 @@ body{background:var(--bg);color:var(--text)}body:before{background-image:linear-
 .detail-inquiry{margin-left:10px;border:1px solid #b9dfcd;background:#edf8f2;color:var(--mint);padding:13px 15px;border-radius:8px;font-weight:700;cursor:pointer}.detail-inquiry:disabled{opacity:.7}
 
 
-.language-switch{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}.language-switch select{display:inline-block;margin:0;padding:5px 8px;font-size:11px}
