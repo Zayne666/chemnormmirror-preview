@@ -5,13 +5,14 @@ function card(p){const id=state.products.indexOf(p),img=p.structure_image||'',sp
 function draw(){const rows=state.filtered.slice((state.page-1)*state.size,state.page*state.size);$('#count').innerHTML=`<b>${state.filtered.length.toLocaleString()}</b> ${langState.lang==="zh"?"个产品":"compounds found"}`;$('#grid').innerHTML=rows.length?rows.map(card).join(''):'<div class="empty">No matching ${langState.lang==="zh"?"个产品":"compounds found"}.</div>';const total=Math.ceil(state.filtered.length/state.size),start=Math.max(1,Math.min(state.page-3,total-6));$('#pages').innerHTML=Array.from({length:Math.min(total,7)},(_,i)=>{const p=start+i;return `<button class="${p===state.page?'active':''}" data-page="${p}">${p}</button>`}).join('');$('#pages').querySelectorAll('button').forEach(b=>b.onclick=()=>{state.page=+b.dataset.page;draw();$('#catalog').scrollIntoView({behavior:'smooth'})})}
 init().catch(e=>{$('#grid').innerHTML='<div class="empty">The product database could not be loaded. Refresh the page to try again.</div>';console.error(e)});
 function addInquiry(id){const key='chemnorm-inquiry',items=JSON.parse(localStorage.getItem(key)||'[]');if(!items.includes(id))items.push(id);localStorage.setItem(key,JSON.stringify(items));alert('Added to inquiry list.');}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-inquiry]');if(b){e.preventDefault();addInquiry(+b.dataset.inquiry)}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-inquiry]');if(b){e.preventDefault();addInquiry(+b.dataset.inquiry);location.href='inquiry.html?id=' + b.dataset.inquiry}});
 
 
 
 
 
 const translations={en:{catalog:'Catalog',capabilities:'Capabilities',quote:'Request a quote',database:'PRODUCT DATABASE',explore:'Explore reference standards',filter:'Filter the catalog and open a compound record for available specifications.',contact:'Contact our team →'},zh:{catalog:'产品目录',capabilities:'服务能力',quote:'获取报价',database:'产品数据库',explore:'探索天然产物标准品',filter:'浏览产品目录，查看规格并提交批量询价。',contact:'联系我们 →'}};function applyLanguage(lang){langState.lang=lang;const t=translations[lang]||translations.en;const nav=[...document.querySelectorAll('.topbar nav a')];if(nav[0])nav[0].textContent=t.catalog;if(nav[1])nav[1].textContent=t.capabilities;if(nav[2])nav[2].textContent=t.quote;const k=[...document.querySelectorAll('.catalog-head .kicker')][0];if(k)k.lastChild.textContent=t.database;const h=document.querySelector('.catalog-head h2');if(h)h.textContent=t.explore;const p=document.querySelector('.catalog-head p');if(p)p.textContent=t.filter;const c=document.querySelector('.quality>a');if(c)c.textContent=t.contact;localStorage.setItem('chemnorm-lang',lang);if(typeof draw==='function')draw()}document.addEventListener('change',e=>{if(e.target.id==='language')applyLanguage(e.target.value)});document.addEventListener('DOMContentLoaded',()=>applyLanguage(localStorage.getItem('chemnorm-lang')||'en'));
+
 
 
 
