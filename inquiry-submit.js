@@ -1,0 +1,8 @@
+(async function(){
+  const params=new URLSearchParams(location.search),key=params.get('key'),idParam=params.get('id');
+  const productField=document.getElementById('product'),identifierField=document.getElementById('identifier');
+  if(key||idParam){try{const data=await(await fetch('data/chemnorm/products.json',{cache:'no-store'})).json();const product=key?data.find(x=>String(x.product_no||'').trim()===String(key).trim()):data[Number(idParam)];if(product){productField.value=product.title||'';identifierField.value=(product.cas||'')+' / '+(product.product_no||'')}}catch(e){}}
+  if(!key&&!idParam){if(params.has('product'))productField.value=params.get('product');if(params.has('identifier'))identifierField.value=params.get('identifier')}
+  const form=document.querySelector('form'),button=form.querySelector('button[type=submit]');
+  form.addEventListener('submit',async event=>{event.preventDefault();button.disabled=true;button.textContent='Sending…';try{const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});if(!response.ok)throw Error('HTTP '+response.status);location.assign('inquiry-success.html?product='+encodeURIComponent(productField.value)+'&identifier='+encodeURIComponent(identifierField.value)+'&key='+encodeURIComponent(key||''))}catch(error){let status=document.getElementById('form-status');if(!status){status=document.createElement('div');status.id='form-status';status.className='form-status';form.insertBefore(status,button)}status.textContent='Unable to send: '+(error.message||'network error')+'. Please try again or email w459292219@gmail.com.';button.disabled=false;button.textContent='Send inquiry →'}});
+})();
